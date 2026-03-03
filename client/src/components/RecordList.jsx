@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Avatar, Card, Text, Badge, Button, Group } from "@mantine/core";
-import { IconAt, IconMapPin, IconCalendarStats } from '@tabler/icons-react';
+import { IconAt, IconMapPin, IconCalendarStats, IconPhone } from "@tabler/icons-react";
 
 const Record = (props) => (
   <Card
@@ -12,7 +12,7 @@ const Record = (props) => (
     style={{
       display: "flex",
       flexDirection: "column",
-      height: "100%", 
+      height: "100%",
     }}
   >
     <Card.Section inheritPadding py="md">
@@ -54,30 +54,43 @@ const Record = (props) => (
     </Card.Section>
 
     <div style={{ height: "70px", marginTop: "15px" }}>
-  <Group gap={5} wrap="nowrap" mb={2}>
-    <IconAt size={14} stroke={1.5} color="var(--mantine-color-dimmed)" />
-    <Text size="xs" c="dimmed" truncate style={{ flex: 1 }}>
-      {props.record.email || "—"}
-    </Text>
-  </Group>
+      <Group gap={5} wrap="nowrap" mb={2}>
+        <IconAt size={14}color="var(--mantine-color-dimmed)" />
+        <Text size="xs" c="dimmed" truncate style={{ flex: 1 }}>
+          {props.record.email || "—"}
+        </Text>
+      </Group>
 
-  <Group gap={5} wrap="nowrap" mb={2}>
-    <IconMapPin size={14} stroke={1.5} color="var(--mantine-color-blue-filled)" />
-    <Text size="xs" fw={500} truncate style={{ flex: 1 }}>
-      {props.record.address.city}, {props.record.address.postalCode}
-    </Text>
-  </Group>
+      <Group gap={5} wrap="nowrap" mb={2}>
+        <IconPhone size={14}color="var(--mantine-color-dimmed)" />
+        <Text size="xs" c="dimmed" truncate style={{ flex: 1 }}>
+          {props.record.phone || "—"}
+        </Text>
+      </Group>
 
-  <Group gap={5}>
-    <IconCalendarStats size={14} stroke={1.5} color="var(--mantine-color-dimmed)" />
-    <Text size="xs" c="dimmed">
-      <Text component="span" fw={700} c="dark" size="xs">
-        {props.record.age}
-      </Text>{" "}
-      ans
-    </Text>
-  </Group>
-</div>
+      <Group gap={5} wrap="nowrap" mb={2}>
+        <IconMapPin
+          size={14}
+          color="var(--mantine-color-blue-filled)"
+        />
+        <Text size="xs" fw={500} truncate style={{ flex: 1 }}>
+          {props.record.address.city}, {props.record.address.postalCode}
+        </Text>
+      </Group>
+
+      <Group gap={5}>
+        <IconCalendarStats
+          size={14}
+          color="var(--mantine-color-dimmed)"
+        />
+        <Text size="xs" c="dimmed">
+          <Text component="span" fw={700} c="dark" size="xs">
+            {props.record.age}
+          </Text>{" "}
+          ans
+        </Text>
+      </Group>
+    </div>
 
     <div style={{ flex: 1 }} />
 
