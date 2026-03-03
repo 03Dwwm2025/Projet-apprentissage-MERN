@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { NativeSelect } from "@mantine/core";
+import Map from "./Map";
 
 export default function Record() {
   const [form, setForm] = useState({
@@ -12,9 +13,19 @@ export default function Record() {
       name: "",
       department: "",
     },
+    address: {
+      street: "",
+      city: "",
+      country: "",
+      coordinates: {
+        lat: "",
+        lng: "",
+      },
+    },
   });
   const [companyNames, setCompanyNames] = useState([]);
   const [companyDepartments, setCompanyDepartments] = useState([]);
+  const { id } = useParams();
 
   useEffect(() => {
     async function getCompaniesNames() {
@@ -112,6 +123,15 @@ export default function Record() {
           name: "",
           department: "",
         },
+        address: {
+          street: "",
+          city: "",
+          country: "",
+          coordinates: {
+            lat: "",
+            lng: "",
+          },
+        },
       });
       navigate("/");
     }
@@ -133,80 +153,150 @@ export default function Record() {
             </h2>
             <p className="mt-1 text-sm leading-6 text-slate-600"></p>
           </div>
-
-          <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 ">
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium leading-6 text-slate-900"
-              >
-                Nom
-              </label>
-              <div className="mt-2">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="First Last"
-                    value={form.lastName}
-                    onChange={(e) => updateForm({ lastName: e.target.value })}
-                  />
+          <div className="flex justify-around">
+            <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 ">
+              <div className="sm:col-span-4">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium leading-6 text-slate-900"
+                >
+                  Nom
+                </label>
+                <div className="mt-2">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      placeholder="First Last"
+                      value={form.lastName}
+                      onChange={(e) => updateForm({ lastName: e.target.value })}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="sm:col-span-4">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium leading-6 text-slate-900"
+                >
+                  Prénom
+                </label>
+                <div className="mt-2">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input
+                      type="text"
+                      name="prenom"
+                      id="prenom"
+                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      placeholder="First Last"
+                      value={form.firstName}
+                      onChange={(e) =>
+                        updateForm({ firstName: e.target.value })
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <NativeSelect
+                label="Entreprise"
+                data={companyNames}
+                value={form.company.name}
+                onChange={(event) =>
+                  updateForm({
+                    company: {
+                      ...form.company,
+                      name: event.currentTarget.value,
+                    },
+                  })
+                }
+                mb="md"
+              />
+              <NativeSelect
+                label="Département"
+                data={companyDepartments}
+                value={form.company.department}
+                onChange={(event) =>
+                  updateForm({
+                    company: {
+                      ...form.company,
+                      department: event.currentTarget.value,
+                    },
+                  })
+                }
+                mb="md"
+              />
+            </div>
+            <div>
+              <Map height="20vw" width="20vw" id={id} onSelectAddress={(addr) => updateForm({ address: addr })}/>
+              <div className="flex justify-around gap-5 mt-4">
+                <div className="sm:col-span-4">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium leading-6 text-slate-900"
+                  >
+                    Latitude
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                      <input
+                        type="text"
+                        name="latitude"
+                        id="latitude"
+                        className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
+                        placeholder="First Last"
+                        value={form.address.coordinates.lat}
+                        onChange={(e) =>
+                          updateForm({
+                            address: {
+                              ...form.address,
+                              coordinates: {
+                                ...form.address.coordinates,
+                                lat: e.target.value,
+                              },
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="sm:col-span-4">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium leading-6 text-slate-900"
+                  >
+                    Longitude
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                      <input
+                        type="text"
+                        name="longitude"
+                        id="longitude"
+                        className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
+                        placeholder="0.000000"
+                        value={form.address.coordinates.lng}
+                        onChange={(e) =>
+                          updateForm({
+                            address: {
+                              ...form.address,
+                              coordinates: {
+                                ...form.address.coordinates,
+                                lng: e.target.value,
+                              },
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="sm:col-span-4">
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium leading-6 text-slate-900"
-              >
-                Prénom
-              </label>
-              <div className="mt-2">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                  <input
-                    type="text"
-                    name="prenom"
-                    id="prenom"
-                    className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    placeholder="First Last"
-                    value={form.firstName}
-                    onChange={(e) => updateForm({ firstName: e.target.value })}
-                  />
-                </div>
-              </div>
-            </div>
-            <NativeSelect
-              label="Entreprise"
-              data={companyNames}
-              value={form.company.name}
-              onChange={(event) =>
-                updateForm({
-                  company: {
-                    ...form.company,
-                    name: event.currentTarget.value,
-                  },
-                })
-              }
-              mb="md"
-            />
-            <NativeSelect
-              label="Département"
-              data={companyDepartments}
-              value={form.company.department}
-              onChange={(event) =>
-                updateForm({
-                  company: {
-                    ...form.company,
-                    department: event.currentTarget.value,
-                  },
-                })
-              }
-              mb="md"
-            />
           </div>
-        </div> 
+        </div>
         <input
           type="submit"
           value="Enregistrer"

@@ -21,14 +21,14 @@ router.get("/", async (req, res) => {
 router.get("/companies/names", async (req, res) => {
   let collection = await db.collection("users"); // ou "records" selon ta collec
   // .distinct("nom_du_champ") renvoie un tableau de strings uniques
-  let results = await collection.distinct("company.name"); 
+  let results = await collection.distinct("company.name");
   res.send(results).status(200);
 });
 
 router.get("/companies/departments", async (req, res) => {
   let collection = await db.collection("users"); // ou "records" selon ta collec
   // .distinct("nom_du_champ") renvoie un tableau de strings uniques
-  let results = await collection.distinct("company.department"); 
+  let results = await collection.distinct("company.department");
   res.send(results).status(200);
 });
 
@@ -54,6 +54,12 @@ router.post("/", async (req, res) => {
         name: req.body.company.name,
         department: req.body.company.department,
       },
+      address: {
+        coordinates: {
+          lat: req.body.address.coordinates.lat,
+          lng: req.body.address.coordinates.lng,
+        },
+      },
     };
     let collection = await db.collection("users");
     let result = await collection.insertOne(newDocument);
@@ -76,6 +82,8 @@ router.patch("/:id", async (req, res) => {
         age: req.body.age,
         "company.name": req.body.company?.name,
         "company.department": req.body.company?.department,
+        "address.coordinates.lat": req.body.address?.coordinates?.lat,
+        "address.coordinates.lng": req.body.address?.coordinates?.lng,
       },
     };
 
